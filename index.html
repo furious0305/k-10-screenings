@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Kappa-10</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kappa-10 Alt Checker 
+  </title>
+<style>
+  body {
+    background-color: #0a0a0a;
+    color: #00ffcc;
+    font-family: 'Share Tech Mono', monospace;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+  h1 {
+    margin-top: 2rem;
+    font-size: 2rem;
+    text-shadow: 0 0 15px #00ffcc;
+  }
+  #scanner {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  input, button {
+    background-color: #111;
+    color: #00ffcc;
+    border: 1px solid #00ffcc;
+    border-radius: 5px;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+  }
+  button:hover {
+    background-color: #003333;
+    cursor: pointer;
+  }
+  #output {
+    margin-top: 2rem;
+    border: 1px solid #00ffcc;
+    border-radius: 10px;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.5rem;
+    background-color: rgba(0, 40, 40, 0.3);
+    box-shadow: 0 0 25px #00ffcc;
+    text-align: left;
+  }
+  img.avatar {
+    display: block;
+    margin: 0 auto 1rem auto;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #00ffcc;
+  }
+  a {
+    color: #00ffaa;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  h3 {
+    margin-top: 1.5rem;
+    border-bottom: 1px solid #00ffcc;
+    padding-bottom: 0.3rem;
+  }
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #002222;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #00ffcc;
+    border-radius: 5px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00ffaa;
+  }
+  .favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+  .game-card {
+    background-color: rgba(0, 60, 60, 0.3);
+    border: 1px solid #00ffcc;
+    border-radius: 8px;
+    padding: 0.5rem;
+    transition: 0.2s ease;
+  }
+  .game-card:hover {
+    box-shadow: 0 0 15px #00ffcc;
+    transform: scale(1.03);
+  }
+  .game-card img {
+    width: 100%;
+    border-radius: 5px;
+  }
+  .groups-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #00ffcc;
+    border-radius: 8px;
+    padding: 0.5rem;
+    background-color: rgba(0, 50, 50, 0.2);
+  }
+  .group-entry {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(0, 255, 204, 0.2);
+  }
+  .group-entry img {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+  }
+
+  /* Logo placement */
+  #kappaLogo {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+    text-align: center;
+  }
+  #kappaLogo img {
+    width: 80px;
+    filter: drop-shadow(0 0 8px #00ffcc);
+    transition: filter 2s ease;
+  }
+  #kappaLogo:hover img {
+    filter: drop-shadow(0 0 15px #00ffaa);
+  }
+  .logo-text {
+    font-size: 0.9rem;
+    color: #00ffcc;
+    text-shadow: 0 0 8px #00ffcc;
+    margin-top: 4px;
+    transition: text-shadow 2s ease;
+  }
+  #kappaLogo:hover .logo-text {
+    text-shadow: 0 0 15px #00ffaa;
+  }
+</style>
+</head>
+<body>
+  <div id="kappaLogo">
+    <img src="https://cdn.discordapp.com/attachments/1157118631520510074/1435404807677673492/content.png?ex=690bd866&is=690a86e6&hm=b0f1b286deed4bcfa045a32ca2dc6f72a0d6f9ff010a7295aec64667be2f4650&">
+    <div class="logo-text">Kappa-10</div>
+  </div>
+  <h1>Kappa-10 Alt Terminal</h1>
+  <div id="scanner">
+    <input id="usernameInput" placeholder="Enter Roblox Username" />
+    <button id="scanBtn">Scan</button>
+  </div>
+  <div id="output"></div>
+
+  <script>
+    const corsProxy = "https://corsproxy.io/?";
+
+    document.getElementById('scanBtn').addEventListener('click', async () => {
+      const username = document.getElementById('usernameInput').value.trim();
+      if (!username) return alert('Enter a username');
+
+      const output = document.getElementById('output');
+      output.innerHTML = '<p>Scanning Roblox intel network...</p>';
+
+      try {
+        const userData = await fetch(`${corsProxy}https://users.roblox.com/v1/usernames/users`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ usernames: [username] })
+        }).then(r => r.json());
+
+        if (!userData.data || !userData.data[0]) throw new Error('User not found');
+
+        const user = userData.data[0];
+        const userId = user.id;
+
+        const [profile, friendsCountData, pastNamesData, avatarData, favoriteGamesData, groupsData] = await Promise.all([
+          fetch(`${corsProxy}https://users.roblox.com/v1/users/${userId}`).then(r => r.json()),
+          fetch(`${corsProxy}https://friends.roblox.com/v1/users/${userId}/friends/count`).then(r => r.json()),
+          fetch(`${corsProxy}https://users.roblox.com/v1/users/${userId}/username-history?limit=10`).then(r => r.json()),
+          fetch(`${corsProxy}https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=420x420&format=Png`).then(r => r.json()),
+          fetch(`${corsProxy}https://games.roblox.com/v2/users/${userId}/favorite/games?limit=100`).then(r => r.json()),
+          fetch(`${corsProxy}https://groups.roblox.com/v2/users/${userId}/groups/roles`).then(r => r.json())
+        ]);
+
+        const avatarUrl = avatarData.data && avatarData.data[0] ? avatarData.data[0].imageUrl : '';
+
+        const created = new Date(profile.created);
+        const ageDays = Math.floor((Date.now() - created) / (1000 * 60 * 60 * 24));
+
+        // Favorite Games Thumbnails
+const favoriteGames = favoriteGamesData.data || [];
+let thumbnails = [];
+
+if (favoriteGames.length > 0) {
+  const universeIds = favoriteGames.map(g => g.id).join(',');
+  const thumbData = await fetch(
+    `${corsProxy}https://thumbnails.roblox.com/v1/games/icons?universeIds=${universeIds}&size=150x150&format=Png&isCircular=false`
+  ).then(r => r.json());
+
+  // Build a map: { universeId: thumbnailUrl }
+  const thumbMap = {};
+  (thumbData.data || []).forEach(t => {
+    thumbMap[t.targetId] = t.imageUrl;
+  });
+
+  // Merge thumbnails with the right games
+  thumbnails = favoriteGames.map(g => ({
+    ...g,
+    thumb: thumbMap[g.id] || ''
+  }));
+}
+
+
+        // Group Icons
+        const groups = groupsData.data || [];
+        const groupIds = groups.slice(0, 100).map(g => g.group.id).join(',');
+        let groupThumbs = [];
+        if (groupIds) {
+          const thumbData = await fetch(`${corsProxy}https://thumbnails.roblox.com/v1/groups/icons?groupIds=${groupIds}&size=150x150&format=Png&isCircular=false`).then(r => r.json());
+          groupThumbs = thumbData.data || [];
+        }
+
+        let html = `<img src="${avatarUrl}" class="avatar" width="120" height="120" />`;
+        html += `<h2>${profile.name}</h2>`;
+        html += `<p>User ID: ${userId}</p>`;
+        html += `<p>Account Age: ${ageDays} days</p>`;
+        html += `<p>Join Date: ${created.toDateString()}</p>`;
+        html += `<p>Friends: ${friendsCountData.count}</p>`;
+        html += `<p><a href='https://www.roblox.com/users/${userId}/profile' target='_blank'>View Roblox Profile</a></p>`;
+
+        if (pastNamesData.data && pastNamesData.data.length > 0) {
+          html += `<p>Previous Names: ${pastNamesData.data.map(n => n.name).join(', ')}</p>`;
+        }
+
+       if (thumbnails.length > 0) {
+  html += `<h3>Favorite Games</h3><div class='favorites-grid'>`;
+  thumbnails.forEach(g => {
+    html += `<div class='game-card'>
+      <a href='https://www.roblox.com/games/${g.id}' target='_blank'>
+        <img src='${g.thumb}' alt='${g.name}' />
+        <div>${g.name}</div>
+      </a>
+    </div>`;
+  });
+  html += `</div>`;
+}
+
+        if (groups.length > 0) {
+          html += `<h3>Groups</h3><div class='groups-list'>`;
+          groups.slice(0, 100).forEach((g, i) => {
+            const thumb = groupThumbs[i] ? groupThumbs[i].imageUrl : '';
+            html += `<div class='group-entry'>
+              <img src='${thumb}' alt='${g.group.name}' />
+              <div>
+                <a href='https://www.roblox.com/groups/${g.group.id}' target='_blank'>${g.group.name}</a><br/>
+                <small>Role: ${g.role.name}</small>
+              </div>
+            </div>`;
+          });
+          if (groups.length > 100) {
+            html += `<p><i>User is in more than 100 groups — only showing first 100.</i></p>`;
+          }
+          html += `</div>`;
+        }
+
+        output.innerHTML = html;
+      } catch (err) {
+        output.innerHTML = `<p style='color:red'>Error: ${err.message}</p>`;
+      }
+    });
+  </script>
+</body>
+</html>
+    
+  </body>
+  
+</html>
